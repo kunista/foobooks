@@ -17,5 +17,21 @@ Route::get('/book/{title}', 'BookController@show');
 
 Route::get('/example', 'BookController@example');
 
+Route::get('/debugbar', function () {
+
+    $data = ['foo' => 'bar'];
+    Debugbar::info($data);
+    Debugbar::info('Current environment: '.App::environment());
+    Debugbar::error('Error!');
+    Debugbar::warning('Watch out…');
+    Debugbar::addMessage('Another message', 'mylabel');
+
+    return 'Just demoing some of the features of Debugbar';
+});
+
+/**
+ * Practice
+ */
+Route::any('/practice/{n?}', 'PracticeController@index');
 
 
