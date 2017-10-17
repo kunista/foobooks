@@ -1,7 +1,8 @@
 <?php
 
 return [
-
+    'supportEmail' => 'help@foobooks.com',
+    'systemEmail' => 'foobooks@gmail.com',
     /*
     |--------------------------------------------------------------------------
     | Mail Driver

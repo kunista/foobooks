@@ -25,6 +25,7 @@ class PracticeController extends Controller
         Debugbar::warning('Watch out…');
         Debugbar::addMessage('Another message', 'mylabel');
         return 'Practice 4';
+
     }
     /**
      *

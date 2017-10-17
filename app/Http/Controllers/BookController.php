@@ -20,7 +20,7 @@ class BookController extends Controller {
      */
     public function show($title)
     {
-       return 'You are viewing '.$title;
+        return view('book.show')->with(['title' => $title]);
     }
 
     /**
