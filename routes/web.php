@@ -31,7 +31,7 @@ Route::get('/debugbar', function () {
 });
 
 /**
- * Practice
+ * Practice test
  */
 Route::any('/practice/{n?}', 'PracticeController@index');
 
