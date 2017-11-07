@@ -10,6 +10,11 @@
 
 @section('content')
 
-    <h1>All books</h1>
+    <form method='POST' action='/subscribe'>
+    {{ csrf_field() }}
+            <input type='text' name='email'>
+    <input type='submit' value='Subscribe!'>
+    </form>
+
 
 @endsection

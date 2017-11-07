@@ -13,6 +13,9 @@
 
 Route::get('/', 'WelcomeController');
 
+Route::get('/book/create', 'BookController@create');
+Route::post('/book', 'BookController@store');
+
 Route::get('/book/', 'BookController@index');
 Route::get('/book/{title}', 'BookController@show');
 
@@ -41,5 +44,9 @@ Route::get('/env', function () {
     dump(config('app.debug'));
     dump(config('app.url'));
 });
+
+Route::post('/subscribe', 'BookController@subscribe');
+
+Route::get('/search', 'BookController@search');
 
 
