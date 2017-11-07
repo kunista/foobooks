@@ -144,6 +144,27 @@ label {
     text-align:left;
 }
 
+.error {
+    list-style-type:none;
+    color:#a94442; /* reddish */
+    text-align:left;
+    margin:0;
+    padding:0;
+    font-size:1.2rem;
+    font-size:12px;
+    font-style:italic;
+}
+
+.success {
+    color:#3c763d; /* greenish */
+}
+
+.details {
+    font-size:1.1rem;
+    font-size:11px;
+    font-style:italic;
+}
+
 
 /*----------------------------------------------------
 Misc

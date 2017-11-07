@@ -1,65 +1,95 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Debugbar;
 use cebe\markdown\MarkdownExtra;
+use App\Rules\AlphaAndSpaces;
+
 class PracticeController extends Controller
 {
+    
     /**
-     *
-     */
+    * Demonstration of a custom validation rule
+    */
+    public function practice6(Request $request)
+    {
+
+        $name = $request->input('name', null);
+
+        $this->validate($request, [
+            'name' => [new AlphaAndSpaces]
+            #'name' => 'regex:/^[\pL\s\-]+$/u'
+        ]);
+
+        return view('practice.6')->with([
+            'name' => $name,
+        ]);
+    }
+
+
+    /**
+    *
+    */
     public function practice5()
     {
-        // use markdown extra
         $parser = new MarkdownExtra();
         echo $parser->parse('# Hello World');
     }
+
+
     /**
-     *
-     */
+    *
+    */
     public function practice4()
     {
         Debugbar::info($_GET);
         Debugbar::info(['a' => 1, 'b' => 2, 'c' => 3]);
         Debugbar::error('Error!');
-        Debugbar::warning('Watch out…');
+        Debugbar::warning('Watch outâ€¦');
         Debugbar::addMessage('Another message', 'mylabel');
         return 'Practice 4';
-
     }
+
     /**
-     *
-     */
+    *
+    */
     public function practice3()
     {
         return view('abc');
     }
+
+
     /**
-     *
-     */
+    *
+    */
     public function practice2()
     {
         $email = config('mail');
         dump($email);
     }
+
     /**
-     *
-     */
+    *
+    */
     public function practice1()
     {
         dump('This is the first example.');
     }
+
+
     /**
-     * ANY (GET/POST/PUT/DELETE)
-     * /practice/{n?}
-     *
-     * This method accepts all requests to /practice/ and
-     * invokes the appropriate method.
-     *
-     * http://foobooks.loc/practice/1 => Invokes practice1
-     * http://foobooks.loc/practice/5 => Invokes practice5
-     * http://foobooks.loc/practice/999 => Practice route [practice999] not defined
-     */
+    * ANY (GET/POST/PUT/DELETE)
+    * /practice/{n?}
+    *
+    * This method accepts all requests to /practice/ and
+    * invokes the appropriate method.
+    *
+    * http://foobooks.loc/practice/1 => Invokes practice1
+    * http://foobooks.loc/practice/5 => Invokes practice5
+    * http://foobooks.loc/practice/999 => Practice route [practice999] not defined
+    */
     public function index($n = null)
     {
         # If no specific practice is specified, show index of all available methods
@@ -76,6 +106,7 @@ class PracticeController extends Controller
             # Otherwise, load the requested method
         } else {
             $method = 'practice'.$n;
+
             if (method_exists($this, $method)) {
                 return $this->$method();
             } else {

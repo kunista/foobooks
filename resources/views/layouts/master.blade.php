@@ -16,24 +16,35 @@
 </head>
 <body>
 
-<header>
-    <img
-            src='http://making-the-internet.s3.amazonaws.com/laravel-foobooks-logo@2x.png'
+    <header>
+        <a href='/'><img
+            src='/images/laravel-foobooks-logo@2x.png'
             style='width:300px'
-            alt='Foobooks Logo'>
-</header>
+            alt='Foobooks Logo'></a>
 
-<section>
-    @yield('content')
-</section>
+        {{-- ToDo: Make it so active link in nav is highlighted --}}
+        <nav>
+            <ul>
+                <li><a href='/trivia'>Trivia</a>
+                <li><a href='/book'>All Books</a>
+                <li><a href='/book/create'>Add a Book</a>
+                <li><a href='/search'>Search</a>
+            </ul>
+        </nav>
+    </header>
 
-<footer>
-    &copy; {{ date('Y') }}
-</footer>
+    <section id='main'>
+        @yield('content')
+    </section>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <footer>
+        <a href='https://github.com/susanBuck/foobooks'><i class='fa fa-github'></i></a>&nbsp;
+        &copy; {{ date('Y') }}
+    </footer>
 
-@stack('body')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    @stack('body')
 
 </body>
 </html>

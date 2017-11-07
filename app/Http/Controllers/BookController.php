@@ -5,40 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Hash;
 
-class BookController extends Controller {
-
+class BookController extends Controller
+{
     /**
-     * GET /books
-     */
+    * GET /
+    */
     public function index()
     {
-        return view('book.index');
+        $jsonPath = database_path('books.json');
+        $booksJson = file_get_contents($jsonPath);
+        $books = json_decode($booksJson, true);
+
+        return view('book.index')->with([
+            'books' => $books
+        ]);
     }
 
+
     /**
-     * GET /book{$title}
-     */
+    * GET /book/{$title}
+    */
     public function show($title)
     {
-        return view('book.show')->with(['title' => $title]);
+        return view('book.show')->with([
+            'title' => $title
+        ]);
     }
 
-    /**
-     * GET /example
-     */
-    public function example()
-    {
-        return Hash::make('topsecret');
-    }
 
     /**
-     *
-     */
+    *
+    */
     public function search(Request $request)
     {
-
-
-
         # Start with an empty array of search results; books that
         # match our search query will get added to this array
         $searchResults = [];
@@ -48,11 +47,8 @@ class BookController extends Controller {
         # will be set to *if* searchTerm is not in the request.
         $searchTerm = $request->input('searchTerm', null);
 
-
-
         # Only try and search *if* there's a searchTerm
         if ($searchTerm) {
-
             # Open the books.json data file
             # database_path() is a Laravel helper to get the path to the database folder
             # See https://laravel.com/docs/helpers for other path related helpers
@@ -88,12 +84,12 @@ class BookController extends Controller {
         ]);
     }
 
+
     /**
-     *
-     */
+    *
+    */
     public function create()
     {
-
         return view('book.create')->with([
             'title' => session('title')
         ]);
@@ -101,8 +97,8 @@ class BookController extends Controller {
 
 
     /**
-     *
-     */
+    *
+    */
     public function store(Request $request)
     {
         // $messages = [
@@ -124,8 +120,4 @@ class BookController extends Controller {
             'title' => $title
         ]);
     }
-
-
-
 }
-

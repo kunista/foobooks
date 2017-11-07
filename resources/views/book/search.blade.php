@@ -18,7 +18,7 @@
 
         <label for='searchTerm'>* Search by title:</label>
         <input type='text' name='searchTerm' id='searchTerm' value='{{ $searchTerm or '' }}'>
-        @include('modules.error-field', ['fieldName' => '$searchTerm'])
+
         <input type='checkbox' name='caseSensitive' {{ ($caseSensitive) ? 'CHECKED' : ''}}>
         <label>case sensitive</label>
 
