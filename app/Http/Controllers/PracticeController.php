@@ -14,6 +14,56 @@ class PracticeController extends Controller
     /**
      *
      */
+
+    public function practice16()
+    {
+        $books = Book::where('author', 'LIKE', 'J.K. Rowling')->get();
+        foreach ($books as $book) {
+            $book->delete();
+        }
+    }
+
+    public function practice15()
+    {
+        $books = Book::where('author', 'LIKE', 'Bell Hooks')->get();
+        foreach ($books as $book) {
+            $book->author = strtolower($book->author);
+            $book->save();
+        }
+    }
+
+    public function practice14()
+    {
+
+        $books = Book::orderBy('published', 'desc')->get();
+
+        dump($books->toArray());
+    }
+
+    public function practice13()
+    {
+
+        $books = Book::orderBy('title', 'asc')->get();
+
+        dump($books->toArray());
+    }
+
+    public function practice12()
+    {
+
+        $books = Book::where('published', '>', 1950)->get();
+
+        dump($books->toArray());
+    }
+
+    public function practice11()
+    {
+
+        $books = Book::orderBy('created_at', 'desc')->limit(2)->get();
+
+        dump($books->toArray());
+    }
+
     public function practice10()
     {
 
