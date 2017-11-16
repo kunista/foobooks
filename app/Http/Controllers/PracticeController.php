@@ -17,19 +17,12 @@ class PracticeController extends Controller
 
     public function practice16()
     {
-        $books = Book::where('author', 'LIKE', 'J.K. Rowling')->get();
-        foreach ($books as $book) {
-            $book->delete();
-        }
+        Book::where('author', '=', 'sylvia plath')->delete();
     }
 
     public function practice15()
     {
-        $books = Book::where('author', 'LIKE', 'Bell Hooks')->get();
-        foreach ($books as $book) {
-            $book->author = strtolower($book->author);
-            $book->save();
-        }
+        Book::where('author', '=', 'Bell Hooks')->update(['author' => 'bell hooks']);
     }
 
     public function practice14()
