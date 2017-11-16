@@ -17,7 +17,7 @@ class PracticeController extends Controller
 
     public function practice16()
     {
-        Book::where('author', '=', 'sylvia plath')->delete();
+        Book::where('author', '=', 'J.K. Rowling')->delete();
     }
 
     public function practice15()
