@@ -52,6 +52,10 @@ Route::any('/practice/{n?}', 'PracticeController@index');
 Route::get('/book/create', 'BookController@create');
 Route::post('/book', 'BookController@store');
 
+# Edit a book
+Route::get('/book/{id}/edit', 'BookController@edit');
+Route::put('/book/{id}', 'BookController@update');
+
 Route::get('/book', 'BookController@index');
 Route::get('/book/{title}', 'BookController@show');
 

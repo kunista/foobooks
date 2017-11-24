@@ -7,9 +7,22 @@ use Debugbar;
 use cebe\markdown\MarkdownExtra;
 use App\Rules\AlphaAndSpaces;
 use App\Book;
+use App\Utilities\Practice;
 
 class PracticeController extends Controller
 {
+
+    /**
+     *
+     */
+    public function practice21()
+    {
+        $books = Book::all();
+
+        foreach ($books as $book) {
+            dump($book->title);
+        }
+    }
 
     /**
      *
