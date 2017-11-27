@@ -17,6 +17,7 @@
     <p>Published in {{ $book['published'] }}</p>
 
     <p><a href='{{ $book['purchase_url'] }}'>Purchase this book...</a></p>
-    <a href='/book/{{ $book['id'] }}/edit'>Edit</a>
+    <a href='/book/{{ $book['id'] }}/edit'>Edit</a> |
+    <a href='/book/{{ $book['id'] }}/delete'>Delete</a>
 
 @endsection

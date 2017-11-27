@@ -57,8 +57,8 @@ Route::get('/book/{id}/edit', 'BookController@edit');
 Route::put('/book/{id}', 'BookController@update');
 
 # Delete a book
-Route::get('/book/{id}/confirm', 'BookController@confirm');
 Route::get('/book/{id}/delete', 'BookController@delete');
+Route::delete('/book/{id}/destroy', 'BookController@destroy');
 
 Route::get('/book', 'BookController@index');
 Route::get('/book/{title}', 'BookController@show');

@@ -4,17 +4,21 @@
     Delete Book
 @endsection
 
-
 @section('content')
 
-    <h1>Delete Book</h1>
+    <h1>Delete book {{ $book->title }} </h1>
 
-    <p>
-        Are you sure you want to delete <em>{{$book->title}}</em>?
-    </p>
+    <form method='POST' action='/book/{{ $book->id }}/destroy'>
 
-    <p>
-        <a href='/book/{{$book->id}}/delete'>Yes...</a>
-    </p>
+        {{ method_field('delete') }}
+
+        {{ csrf_field() }}
+
+        <div class="confirmation"> Are you sure you want to delete book {{ $book->title }} ?
+        </div>
+            <input type='submit' value='Yes' class='btn btn-primary btn-small'>
+            <a class="btn btn-default btn-close" href="/book">Cancel</a>
+        </div>
+    </form>
 
 @endsection
