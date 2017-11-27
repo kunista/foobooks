@@ -175,4 +175,28 @@ class BookController extends Controller
         return redirect('/book/'.$id.'/edit')->with('alert', 'Your changes were saved.');
     }
 
+    /**
+     *
+     */
+    public function confirm($id) {
+
+        $book = Book::find($id);
+
+        return view('book.delete')->with('book', $book);
+    }
+
+    /*
+    * GET /book/{id}/delete
+    */
+    public function delete($id)
+    {
+        $book = Book::find($id);
+
+        if (!$book) {
+            return redirect('/book')->with('alert', 'Book not found');
+        }
+        $book->delete();
+        return redirect('/book')->with('alert', 'The book '.$book->title.' was deleted.');
+    }
+
 }
