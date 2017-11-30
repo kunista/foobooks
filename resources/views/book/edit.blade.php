@@ -21,7 +21,7 @@
         @include('modules.error-field', ['fieldName' => 'title'])
 
         <label for='author'>* Author</label>
-        <input type='text' name='author' id='author' value='{{ old('author', $book->author) }}'>
+        @include('book.authorsDropdown')
         @include('modules.error-field', ['fieldName' => 'author'])
 
         <label for='published'>* Published Year (YYYY)</label>
@@ -35,7 +35,17 @@
         <label for='purchase_link'>* Purchase URL </label>
         <input type='text' max='4' name='purchase_link' id='purchase_link' value='{{ old('purchase_link', $book->purchase_link) }}'>
         @include('modules.error-field', ['fieldName' => 'purchase_link'])
-        
+
+        @foreach ($tagsForCheckboxes as $id => $name)
+            <input
+                    type='checkbox'
+                    value='{{ $id }}'
+                    name='tags[]'
+                    {{ (in_array($name, $tagsForThisBook)) ? 'CHECKED' : '' }}
+                    >
+            {{ $name }} <br>
+        @endforeach
+
         <input type='submit' value='Save changes' class='btn btn-primary btn-small'>
     </form>
 

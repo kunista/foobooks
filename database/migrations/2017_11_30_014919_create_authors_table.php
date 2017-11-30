@@ -6,11 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateAuthorsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('authors', function (Blueprint $table) {
@@ -22,17 +17,11 @@ class CreateAuthorsTable extends Migration
             $table->string('last_name');
             $table->integer('birth_year');
             $table->string('bio_url');
-
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('authors');
     }
 }

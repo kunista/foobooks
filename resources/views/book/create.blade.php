@@ -1,4 +1,3 @@
-{{-- /resources/views/book/create.blade.php --}}
 @extends('layouts.master')
 
 @section('title')
@@ -6,6 +5,7 @@
 @endsection
 
 @section('content')
+
     <h1>Add a new book</h1>
 
     <form method='POST' action='/book'>
@@ -19,7 +19,7 @@
         @include('modules.error-field', ['fieldName' => 'title'])
 
         <label for='author'>* Author</label>
-        <input type='text' name='author' id='author' value='{{ old('author', 'Dr. Seuss') }}'>
+        @include('book.authorsDropdown')
         @include('modules.error-field', ['fieldName' => 'author'])
 
         <label for='published'>* Published Year (YYYY)</label>
@@ -37,7 +37,4 @@
         <input type='submit' value='Add book' class='btn btn-primary btn-small'>
     </form>
 
-    @if(isset($title))
-        <div class='confirmation success'>Your book {{ $title }} was added.</a>
-    @endif
 @endsection

@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Hash;
 use App\Book;
+use App\Author;
+use App\Tag;
 
 class BookController extends Controller
 {
     /**
-    * GET /
-    */
+     * GET /
+     */
     public function index()
     {
         $books = Book::orderBy('title')->get();
+        $newBooks = $books->sortByDesc('created_at')->take(3);
 
-        # Get from collection
-        #$newBooks = Book::orderByDesc('created_at')->limit(3)->get();
-        $newBooks = $books->sortByDesc('createad_at')->take(3);
         return view('book.index')->with([
             'books' => $books,
             'newBooks' => $newBooks,
@@ -43,8 +43,108 @@ class BookController extends Controller
 
 
     /**
-    *
+     * GET /book/create
+     */
+    public function create()
+    {
+        $authorsForDropdown = Author::getForDropdown();
+
+        return view('book.create')->with([
+            'authorsForDropdown' => $authorsForDropdown
+        ]);
+    }
+
+
+    /**
+     * POST /book
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|min:3',
+            'author' => 'notIn:0',
+            'published' => 'required|min:4|numeric',
+            'purchase_link' => 'required|url',
+            'cover' => 'required|url',
+        ]);
+
+        #$author = Author::find($request->input('author'));
+
+        # Add new book to the database
+        $book = new Book();
+        $book->title = $request->input('title');
+        #$book->author = $request->input('author');
+        #$book->author()->associate($author);
+        $book->author_id = $request->input('author');
+        $book->published = $request->input('published');
+        $book->cover = $request->input('cover');
+        $book->purchase_link = $request->input('purchase_link');
+        $book->save();
+
+        return redirect('/book')->with('alert', 'The book '.$request->input('title').' was added.');
+    }
+
+
+    /*
+    * GET /book/{id}/edit
     */
+    public function edit($id)
+    {
+        $book = Book::find($id);
+
+        if (!$book) {
+            return redirect('/book')->with('alert', 'Book not found');
+        }
+
+        $authorsForDropdown = Author::getForDropdown();
+        $tagsForCheckboxes = Tag::getForCheckboxes();
+
+        $tagsForThisBook = [];
+        foreach ($book->tags as $tag) {
+            $tagsForThisBook[] = $tag->name;
+        }
+
+        return view('book.edit')->with([
+            'book' => $book,
+            'authorsForDropdown' => $authorsForDropdown,
+            'tagsForCheckboxes' => $tagsForCheckboxes,
+            'tagsForThisBook' => $tagsForThisBook
+        ]);
+    }
+
+
+    /*
+    * PUT /book/{id}
+    */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required|min:3',
+            'author' => 'notIn:0',
+            'published' => 'required|min:4|numeric',
+            'cover' => 'required|url',
+            'purchase_link' => 'required|url',
+        ]);
+
+        $book = Book::find($id);
+
+        $book->tags()->sync($request->input('tags'));
+
+        $book->title = $request->input('title');
+        $book->author_id = $request->input('author');
+        $book->published = $request->input('published');
+        $book->cover = $request->input('cover');
+        $book->purchase_link = $request->input('purchase_link');
+        $book->save();
+
+        return redirect('/book/'.$id.'/edit')->with('alert', 'Your changes were saved.');
+    }
+
+
+    /**
+     * GET /search
+     * TODO: Update this so it searches the database, not books.json
+     */
     public function search(Request $request)
     {
         # Start with an empty array of search results; books that
@@ -93,89 +193,6 @@ class BookController extends Controller
         ]);
     }
 
-
-    /**
-    *
-    */
-    public function create()
-    {
-        return view('book.create')->with([
-            'title' => session('title')
-        ]);
-    }
-
-
-    /**
-    *
-    */
-    public function store(Request $request)
-    {
-        // $messages = [
-        //     'required' => 'Don\'t forget the :attribute field',
-        // ];
-
-        $this->validate($request, [
-            'title' => 'required|min:3',
-            'author' => 'required',
-            'published' => 'required|min:4|numeric',
-            'purchase_link' => 'required|url',
-            'cover' => 'required|url',
-        ]);
-
-        # Add new book to the database
-        $book = new Book();
-        $book->title = $request->input('title');
-        $book->author = $request->input('author');
-        $book->published = $request->input('published');
-        $book->cover = $request->input('cover');
-        $book->purchase_link = $request->input('purchase_link');
-        $book->save();
-
-        return redirect('/book')->with('alert', 'The book '.$request->input('title').' was added.');
-
-    }
-
-    /*
-    * GET /book/{id}/edit
-    */
-    public function edit($id)
-    {
-        $book = Book::find($id);
-
-        if (!$book) {
-            return redirect('/book')->with('alert', 'Book not found');
-        }
-
-        return view('book.edit')->with(['book' => $book]);
-    }
-
-
-    /*
-    * PUT /book/{id}
-    */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'title' => 'required|min:3',
-            'author' => 'required',
-            'published' => 'required|min:4|numeric',
-            'cover' => 'required|url',
-            'purchase_link' => 'required|url',
-        ]);
-
-        $book = Book::find($id);
-
-        $book->title = $request->input('title');
-        $book->author = $request->input('author');
-        $book->published = $request->input('published');
-        $book->cover = $request->input('cover');
-        $book->purchase_link = $request->input('purchase_link');
-        $book->save();
-
-        return redirect('/book/'.$id.'/edit')->with('alert', 'Your changes were saved.');
-    }
-
-
     public function delete($id) {
 
         $book = Book::find($id);
@@ -184,7 +201,10 @@ class BookController extends Controller
             return redirect('/book')->with('alert', 'Book not found');
         }
 
-        return view('book.delete')->with('book', $book);
+        return view('book.delete')->with([
+            'book' => $book,
+            'previousUrl' => url()->previous() == url()->current() ? '/book' : url()->previous(),
+        ]);
     }
 
 
@@ -196,8 +216,12 @@ class BookController extends Controller
         if (!$book) {
             return redirect('/book')->with('alert', 'Book not found');
         }
+
+        $book->tags()->detach();
+
         $book->delete();
         return redirect('/book')->with('alert', 'The book '.$book->title.' was deleted.');
     }
+
 
 }
