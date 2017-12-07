@@ -39,4 +39,10 @@ class Book extends Model
 
         dump($data);
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
 }

@@ -13,10 +13,26 @@ class BookController extends Controller
     /**
      * GET /
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::orderBy('title')->get();
-        $newBooks = $books->sortByDesc('created_at')->take(3);
+        $user = $request->user();
+
+        # Note: We're getting the user from the request, but you can also get it like this:
+        //$user = Auth::user();
+
+        if ($user) {
+            # Approach 1)
+            //$books = Book::where('user_id', '=', $user->id)->orderBy('title')->get();
+
+            # Approach 2) Take advantage of Model relationships
+            $books = $user->books()->orderBy('title')->get();
+
+            # Get 3 most recently added books
+            $newBooks = $books->sortByDesc('created_at')->take(3); # Query existing Collection
+        } else {
+            $books = [];
+            $newBooks = [];
+        }
 
         return view('book.index')->with([
             'books' => $books,

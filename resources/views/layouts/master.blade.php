@@ -16,42 +16,34 @@
 </head>
 <body>
 
+@if(session('alert'))
+    <div class='alert'>
+        {{ session('alert') }}
+    </div>
+@endif
 
-    @if(session('alert'))
-        <div class='alert'>
-            {{ session('alert') }}
-        </div>
-    @endif
+<header>
+    <a href='/'><img
+                src='/images/laravel-foobooks-logo@2x.png'
+                style='width:300px'
+                alt='Foobooks Logo'></a>
 
-    <header>
-        <a href='/'><img
-            src='/images/laravel-foobooks-logo@2x.png'
-            style='width:300px'
-            alt='Foobooks Logo'></a>
+    @include('modules.nav')
+</header>
 
-        {{-- ToDo: Make it so active link in nav is highlighted --}}
-        <nav>
-            <ul>
-                <li><a href='/trivia'>Trivia</a>
-                <li><a href='/book'>All Books</a>
-                <li><a href='/book/create'>Add a Book</a>
-                <li><a href='/search'>Search</a>
-            </ul>
-        </nav>
-    </header>
+<section id='main'>
+    @yield('content')
+</section>
 
-    <section id='main'>
-        @yield('content')
-    </section>
+<footer>
+    <a href='https://github.com/susanBuck/foobooks'><i class='fa fa-github'></i></a>&nbsp;
+    &copy; {{ date('Y') }}
+</footer>
 
-    <footer>
-        <a href='https://github.com/susanBuck/foobooks'><i class='fa fa-github'></i></a>&nbsp;
-        &copy; {{ date('Y') }}
-    </footer>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='/js/foobooks.js'></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-    @stack('body')
+@stack('body')
 
 </body>
 </html>

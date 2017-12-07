@@ -1,5 +1,17 @@
 <?php
 
+Route::get('/show-login-status', function () {
+    $user = Auth::user();
+
+    if ($user) {
+        dump('You are logged in.', $user->toArray());
+    } else {
+        dump('You are not logged in.');
+    }
+
+    return;
+});
+
 Route::get('/debug', function () {
 
     $debug = [
@@ -49,31 +61,39 @@ Route::any('/practice/{n?}', 'PracticeController@index');
 /**
  * Book
  */
-Route::get('/book/create', 'BookController@create');
-Route::post('/book', 'BookController@store');
+Route::group(['middleware' => 'auth'], function () {
 
-# Edit a book
-Route::get('/book/{id}/edit', 'BookController@edit');
-Route::put('/book/{id}', 'BookController@update');
+    # Create a book
+    Route::get('/book/create', 'BookController@create');
+    Route::post('/book', 'BookController@store');
 
-# Delete a book
-Route::get('/book/{id}/delete', 'BookController@delete');
-Route::delete('/book/{id}', 'BookController@destroy');
+    # Edit a book
+    Route::get('/book/{id}/edit', 'BookController@edit');
+    Route::put('/book/{id}', 'BookController@update');
 
-Route::get('/book', 'BookController@index');
-Route::get('/book/{title}', 'BookController@show');
+    # Delete a book
+    Route::get('/book/{id}/delete', 'BookController@delete');
+    Route::delete('/book/{id}', 'BookController@destroy');
 
-Route::get('/search', 'BookController@search');
+    # View all books
+    Route::get('/book', 'BookController@index');
 
+    # View a book
+    Route::get('/book/{id}', 'BookController@show');
 
-/**
- * Example portion of Foobooks that mirrors what you'll do for P3
- */
-Route::get('/trivia/', 'TriviaController@index');
-Route::get('/trivia/check-answer', 'TriviaController@checkAnswer');
+    # Search all books
+    Route::get('/search', 'BookController@search');
+
+    Route::get('/trivia/', 'TriviaController@index');
+    Route::get('/trivia/check-answer', 'TriviaController@checkAnswer');
+
+});
+
 
 
 /**
  * Homepage
  */
 Route::get('/', 'WelcomeController');
+
+Auth::routes();

@@ -44,6 +44,7 @@ class BooksTableSeeder extends Seeder
                 'published' => $book[2],
                 'cover' => $book[3],
                 'purchase_link' => $book[4],
+                'user_id' => 1, # <--- NEW LINE
             ]);
             $count--;
         }
